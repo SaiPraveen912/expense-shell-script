@@ -55,6 +55,7 @@ curl -o /tmp/backend.zip https://expense-builds.s3.us-east-1.amazonaws.com/expen
 VALIDATE $? "Downloading backend code"
 
 cd /app
+rm -rf /app/* # * Remove all the content inside /app directory if not removed while running shell script it will get stuck here 
 unzip /tmp/backend.zip &>>$LOGFILE
 VALIDATE $? "extracted backend code"
 
