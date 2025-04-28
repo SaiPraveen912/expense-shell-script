@@ -62,6 +62,7 @@ VALIDATE $? "extracted backend code"
 npm install &>>$LOGFILE
 VALIDATE $? "Installing nodejs dependencies"
 
+# Check your repo and path
 cp /home/ec2-user/expense-shell-script/backend.service /etc/systemd/system/backend.service &>>$LOGFILE
 VALIDATE $? "Copied backend service"
 
