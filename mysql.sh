@@ -8,6 +8,8 @@
  G="\e[32m"
  Y="\e[33m"
  N="\e[0m"
+ echo "Please enter DB password:"
+ read -s mysql_root_password # -s used when typing in command line password is not visible
  
  VALIDATE(){
     if [ $1 -ne 0 ]
@@ -44,10 +46,10 @@
 # Shell script does not support idempotency
 # Idempotent --> Result should not change even though how many times we run the script
 
-mysql -h db.daws-78s.space -uroot -pExpenseApp@1 -e 'show databases;' &>>$LOGFILE
+mysql -h db.daws-78s.space -uroot -p${mysql_root_password} -e 'show databases;' &>>$LOGFILE
 if [ $? -ne 0 ]
 then
-    mysql_secure_installation --set-root-pass ExpenseApp@1 &>>$LOGFILE
+    mysql_secure_installation --set-root-pass ${mysql_root_password} &>>$LOGFILE
     VALIDATE $? "MySQL root password setup"
 else
     echo -e "MySQL Root password is already setup...$Y SKIPPING $N"
