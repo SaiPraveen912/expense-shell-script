@@ -46,4 +46,15 @@ else
     echo -e "Expense user already exist...$Y SKIPPING $N"
 fi
 
+mkdir -p /app # -p if directory exist it does not give error else it will create new directory
+VALIDATE $? "Creating app directory"
 
+curl -o /tmp/backend.zip https://expense-builds.s3.us-east-1.amazonaws.com/expense-backend-v2.zip
+VALIDATE $? "Downloading backend code"
+
+cd /app
+unzip /tmp/backend.zip
+VALIDATE $? "extracted backend code"
+
+npm install
+VALIDATE $? "Installing nodejs dependencies"
