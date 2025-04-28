@@ -37,5 +37,18 @@
  systemctl start mysqld &>>$LOGFILE
  VALIDATE $? "Starting MySQL Server"
  
- mysql_secure_installation --set-root-pass ExpenseApp@1 &>>$LOGFILE
- VALIDATE $? "Setting up root password"
+#  mysql_secure_installation --set-root-pass ExpenseApp@1 &>>$LOGFILE
+#  VALIDATE $? "Setting up root password"
+
+# Below code will be usefull for idempotent nature
+# Shell script does not support idempotency
+# Idempotent --> Result should not change even though how many times we run the script
+
+mysql -h db.daws-78s.space -uroot -pExpenseApp@1 -e 'show databases;' &>>$LOGFILE
+if [ $? -ne 0 ]
+then
+    mysql_secure_installation --set-root-pass ExpenseApp@1 &>>$LOGFILE
+    VALIDATE $? "MySQL root password setup"
+else
+    echo -e "MySQL Root password is already setup...$Y SKIPPING $N"
+fi
